@@ -1,15 +1,29 @@
 .nav-container {
     width: 100%;
-    height: 6rem;
+    height: 10rem;
     padding: 0.5rem;
-    position: fixed;
-    background-color: #d70aea;
+    position: sticky;
+    background-color: #e0e0e0;
 }
+.logo{
+    height: 7rem;
+    width: 7rem;
+    /* margin-right: 0px;    */
+    /* border-radius: 50%; */
+    margin-left: 50px;
+    margin-top: 10px;
+    
+}
+/* .nav-container img {
+   
 
-.nav-container img {
-    height: 5rem;
-    width: 5rem;
-    margin-right: 0px;
+} */
+
+.profile{
+    height: 7rem;
+    width: 7rem;
+    
+    /* margin-right: 0px; */
     border-radius: 50%;
 }
 .nav-container .right {
@@ -26,12 +40,12 @@
     cursor: pointer;
     border-radius: 5em;
     color: #fff;
-    background: linear-gradient(to right, #9C27B0, #E040FB);
+    background: linear-gradient(to right, #2ed19e, #2ed19e);
     border: 0;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 15px;
+    padding-top: 15px;
     font-family: 'Ubuntu', sans-serif;
     margin-left: 10%;
     font-size: 13px;

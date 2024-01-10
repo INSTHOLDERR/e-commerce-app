@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom'; 
 import "./style/home.css";
 
 function Home() {
@@ -14,7 +14,7 @@ function Home() {
         const response = await axios.get('/api/get-products');
         setProducts(response.data.products);
         setLoading(false);
-        console.log(response.data.products);
+        console.log("products",response.data.products);
       } catch (error) {
         console.error('Error fetching products:', error);
         setError('Error fetching products.');
@@ -28,7 +28,7 @@ function Home() {
   return (
     <div className='container-fluid'>
       <div className="row list-row">
-        {products.map((product, index) => (
+        {products?.map((product, index) => (
           <div key={index} className="col-lg-3 col-md-6 col-sm-12 list-col">
             <div className="product-list">
               <div className="product-upper">

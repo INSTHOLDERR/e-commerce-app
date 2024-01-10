@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import userModel from "../models/user.model.js";
+import productsModel from "../models/products.model.js";
 
 const { sign } = jwt;
 
@@ -76,49 +77,46 @@ export async function login(req, res) {
     }
 }
 
-export async function profile(req, res) {
-    try {
-        let { userId } = req.user;
-        let user = await userModel.findOne({ _id: userId },{ password: 0 });
-        if(user) {
-            return res.status(200).json({
-                msg: "User data",
-                user
-            })
-        }
-        return res.status(404).json({
-            msg: "Unknown user!"
-        })
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ msg: "Error occured!" })
-    }
-}
+// export async function profile(req, res) {
+//     try {
+//         let { userId } = req.user;
+//         console.log(userId);
+//         let user = await userModel.findOne({ _id: userId },{ password: 0 });
+//         if(user) {
+//             return res.status(200).json({
+//                 msg: "User data",
+//                 user
+//             })
+//         }
+//         return res.status(404).json({
+//             msg: "Unknown user!"
+//         })
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ msg: "Error occured!" })
+//     }
+// }
 
 
 
 
 export async function getProfile(req, res) {
     try {
-      // Assuming you have the user ID stored in req.user
-      const userId = req.user; // Adjust based on your authentication mechanism
+      const { userId } = req.user;
+      
   
-      // Fetch user profile details from the database
-      const user = await userModel.findById(userId);
-  
+      const user = await userModel.findOne({ _id: userId }, { password: 0 });
+      
       if (!user) {
         return res.status(404).json({ msg: 'User not found' });
       }
   
-      // Send the user profile details in the response
+      const products = await productsModel.find({ userId: user._id });
+  
       return res.status(200).json({
         msg: 'User profile found',
-        profile: {
-          username: user.username,
-          email: user.email,
-          phone: user.phone,
-          image: user.image, // Add more fields as needed
-        },
+        user,
+        products,
       });
     } catch (error) {
       console.error(error);

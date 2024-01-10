@@ -13,11 +13,11 @@ import Login from './page/Login';
 import Profile from "./page/Profile";
 import PageNotFound from "./page/PageNotFound";
 import ProductDetails from "./page/ProductDetails";
+import Cart from "./page/Cart";
 
 
 import { getProfile } from "./helpers/request";
 import { Auth } from "./middlewares/auth";
-// import { Seller } from './middlewares/seller';
 import AddProducts from './page/addProducts';
 config();
 
@@ -57,6 +57,7 @@ function App() {
               <Route path="/profile" element={<Auth><Profile /></Auth>} />
               <Route path="/add-products" element={<AddProducts />} />
               <Route path="/product/:productId" element={<ProductDetails />} />
+              <Route path="/cart" element={<Cart />}/>
               <Route path="/*" element={<PageNotFound />} />
             </Routes>
           </Suspense>

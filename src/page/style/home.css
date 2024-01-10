@@ -1,15 +1,16 @@
 .list-row{
     width: screen;
     height: 50vh;
-    background-color: blue;
+    /* background-color: blue; */
 }
 .list-col{
     height: 100%;
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
 }
 .product-list{
     height: 40vh;
-    width: fit-content;
+    width: 400px;
+    /* width: fit-content; */
     background-color: black;
     position: relative;
     top: 50%;
@@ -33,7 +34,7 @@
 .product-down{
     height: 15vh;
     width: 100%;
-    background-color: rgb(0, 236, 59);
+    background-color: #e6e6e6;
     text-align: center;
 }
 .product-title{
@@ -43,7 +44,7 @@
     cursor: pointer;
     border-radius: 5em;
     color: #fff;
-    background: linear-gradient(to right, #9C27B0, #E040FB);
+    background: linear-gradient(to right, #2ed19e, #2ed19e);
     border: 0;
     padding-left: 40px;
     padding-right: 40px;

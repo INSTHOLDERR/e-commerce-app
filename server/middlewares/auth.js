@@ -1,23 +1,23 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-const { verify } = jwt;
-
-export async function Auth(req, res, next) {
+export function Auth(req, res, next) {
     try {
-        let token = req.headers.authorization?.split(" ")[1];
-        let user = verify(token, process.env.SECRET_KEY);
-        if(user) {
-            req.user = user;
-            return next();
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ msg: 'No authorization token provided' });
         }
-        return res.status(401).json({
-            msg: "Unauthorized access!"
-        })
+
+        const token = authHeader.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ msg: 'JWT must be provided' });
+        }
+
+        const user = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = user;
+        next();
+       
     } catch (error) {
-        console.log(error);
-        return res.status(401).json({
-            msg: "Unauthorized access!"
-        })
+        console.error(error);
+        return res.status(401).json({ msg: 'Unauthorized access - Invalid token.' });
     }
 }
-

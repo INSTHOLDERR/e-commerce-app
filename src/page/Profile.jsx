@@ -3,14 +3,21 @@ import axios from 'axios';
 
 function Profile() {
   const [profileData, setProfileData] = useState(null);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('/api/profile');
-        setProfileData(response.data);
+        const response = await axios.get('/api/profile', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        });
+
+        setProfileData(response.data.user);
+        setProducts(response.data.products);
+        console.log(response.data.products);
       } catch (error) {
         console.error('Error fetching profile:', error);
       } finally {
@@ -31,7 +38,20 @@ function Profile() {
           <p><strong>Username:</strong> {profileData.username}</p>
           <p><strong>Email:</strong> {profileData.email}</p>
           <p><strong>Phone:</strong> {profileData.phone}</p>
-          {/* Add more details as needed */}
+
+          <h3>Your Products</h3>
+
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div key={product._id}>
+                <p><strong>Title:</strong> {product.title}</p>
+                <p><strong>Stock:</strong> {product.stock}</p>
+                <p><strong>Description:</strong> {product.description}</p>
+              </div>
+            ))
+          ) : (
+            <p>No products found.</p>
+          )}
         </div>
       )}
     </div>

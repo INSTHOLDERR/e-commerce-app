@@ -16,7 +16,8 @@ function Nav() {
       username: null,
       phone: null,
       image: null,
-      email: null
+      email: null,
+      price:null
     });
     localStorage.removeItem("token");
     toast.success("Logged out!");
@@ -25,10 +26,10 @@ function Nav() {
   return (
     <div className='nav-container'>
       <Toaster position="top-center" />
-      <img src="/logo.png" alt="logo" onClick={() => navigate("/")} />
+      <img src="/logo.png" alt="logo" className='logo' onClick={() => navigate("/")} />
       {isLoggedin ?
         <div className="right profile">
-          <img src={image} alt="prifile" onClick={() => navigate("/profile")} />
+          <img src={image} alt="prifile" className='profile' onClick={() => navigate("/profile")} />
           <button onClick={logoutHandler}>Logout</button>
         </div>
         :

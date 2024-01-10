@@ -30,6 +30,16 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
         unique: false
+    },
+    price: {
+        type: Number,
+        required: true,
+        unique: false
+    },
+    userId: {
+        type: String,
+        required: true,
+        unique: false
     }
 });
 
