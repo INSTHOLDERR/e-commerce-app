@@ -6,7 +6,7 @@ import { Auth} from "./middlewares/auth.js";
 import uploader from "./middlewares/multer.js";
 
 const productUploader = uploader([
-  { name: "images", maxCount: 10 },
+  { name: "images", maxCount: 6 },
 ]);
 
 const router = Router();
@@ -27,7 +27,13 @@ router.route("/decrement-cart").post(product.decrementCart);
 router.route("/delete-cart-item").delete(Auth,product.deleteCartItem);
 router.route("/check-cart/:productId").get(Auth,product.checkCart);
 router.route("/delete-product/:productId").delete(product.deleteproduct);
-router.route("/uploaded-images/:name").get(product.getimg);
+router.route("/uploaded-images/:productId").get(product.getimg);
+router.route("/delete-cart-item").post(product.removeCart);
+router.route("/buy-now").post(product.buynow);
+
+
+router.route("/get-users").get(product.adminfetchusers);
+router.route("/delete-user/:userId").delete(product.admindeleteuser);
 // /api
 
 export default router;

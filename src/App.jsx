@@ -14,6 +14,7 @@ import Profile from "./page/Profile";
 import PageNotFound from "./page/PageNotFound";
 import ProductDetails from "./page/ProductDetails";
 import Cart from "./page/Cart";
+import Admin from "./page/Admin"
 
 
 import { getProfile } from "./helpers/request";
@@ -48,7 +49,7 @@ function App() {
     <GlobalContext.Provider value={{ getGlobal, setGlobal }}>
       <BrowserRouter>
         <Nav />
-        <Body>
+        {/* <Body> */}
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route index element={<Home />} />
@@ -58,10 +59,11 @@ function App() {
               <Route path="/add-products" element={<AddProducts />} />
               <Route path="/product/:productId" element={<ProductDetails />} />
               <Route path="/cart" element={<Cart />}/>
+              <Route path="/admin" element={<Admin />} />
               <Route path="/*" element={<PageNotFound />} />
             </Routes>
           </Suspense>
-        </Body>
+        {/* </Body> */}
       </BrowserRouter>
     </GlobalContext.Provider>
   )

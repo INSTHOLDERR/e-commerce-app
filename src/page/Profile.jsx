@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'; 
 
 function Profile() {
   const [profileData, setProfileData] = useState(null);
@@ -34,24 +35,66 @@ function Profile() {
       {loading && <p>Loading...</p>}
       {profileData && (
         <div className="profile-details">
-          <img src={profileData.image} alt="Profile" className="profile-image" />
-          <p><strong>Username:</strong> {profileData.username}</p>
-          <p><strong>Email:</strong> {profileData.email}</p>
-          <p><strong>Phone:</strong> {profileData.phone}</p>
 
-          <h3>Your Products</h3>
+          <div className="row">
 
+            <div className="col-lg-4 col-md-6 col-sm-12" style={{ textAlign: 'center', paddingTop: '50px' }}>
+              <img src={profileData.image} style={{ height: '400px', width: '400px' }} alt="Profile" className="profile-image" />
+            </div>
+
+            <div className="col-lg-8 col-md-6 col-sm-12">
+              <table style={{ marginTop: '100px' }}>
+                <tbody>
+
+                  <tr>
+                    <td style={{ verticalAlign: 'top' }}><h2>Username</h2> </td>
+                    <td style={{ verticalAlign: 'top' }}><h2>:</h2></td>
+                    <td style={{ verticalAlign: 'top' }}><h2>{profileData.username}</h2> </td>
+                  </tr>
+
+                  <tr>
+                    <td style={{ verticalAlign: 'top' }}><h2>Email</h2> </td>
+                    <td style={{ verticalAlign: 'top' }}><h2>:</h2></td>
+                    <td style={{ verticalAlign: 'top' }}><h2>{profileData.email}</h2> </td>
+                  </tr>
+
+                  <tr>
+                    <td style={{ verticalAlign: 'top' }}><h2>Phone</h2> </td>
+                    <td style={{ verticalAlign: 'top' }}><h2>:</h2></td>
+                    <td style={{ verticalAlign: 'top' }}><h2>{profileData.phone}</h2> </td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+
+
+
+          <h2 style={{paddingTop:'50px'}}>Your Products</h2>
+          <div className="row list-row">
           {products.length > 0 ? (
-            products.map((product) => (
-              <div key={product._id}>
-                <p><strong>Title:</strong> {product.title}</p>
-                <p><strong>Stock:</strong> {product.stock}</p>
-                <p><strong>Description:</strong> {product.description}</p>
+            products.map((product, index) => (
+              <div key={index} className="col-lg-3 col-md-6 col-sm-12 list-col">
+                <div className="product-list">
+                  <div className="product-upper">
+                    <img className='product-image' src={product.thumbnail} alt={product.title} />
+                  </div>
+                  <div className="product-down">
+                    <h2 className='product-title'>{product.title}</h2>
+
+                    <Link to={`/product/${product._id}`} className='product-view'>View</Link>
+                  </div>
+                </div>
               </div>
-            ))
-          ) : (
-            <p>No products found.</p>
-          )}
+            ))) : (
+              <p>No products found.</p>
+            )}          
+  
+          </div>
+
         </div>
       )}
     </div>

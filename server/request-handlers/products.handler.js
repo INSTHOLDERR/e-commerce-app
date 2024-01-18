@@ -94,10 +94,10 @@ export async function viewProducts(req, res) {
     console.log(userId);
 
     let product = await productsModel.findOne({ _id: productId });
-    let name = product.images;
+    // let name = product.images;
 
-    const filePath = path.resolve(`./uploaded-images/${name}`);
-    console.log(filePath);
+    // const filePath = path.resolve(`./uploaded-images/${name}`);
+    // console.log(filePath);
 
     if (!product) {
       return res.status(404).json({ msg: 'Product not found' });
@@ -108,14 +108,14 @@ export async function viewProducts(req, res) {
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    
+
 
     return res.status(200).json({
       msg: 'Product found',
       product,
       user,
       userId,
-      filePath,
+      // filePath,
     });
 
 
@@ -277,7 +277,7 @@ export async function deleteCartItem(req, res) {
 
 export async function checkCart(req, res) {
   const { productId } = req.params;
-  const userId = req.user.id; 
+  const userId = req.user.id;
 
   try {
     const cartItem = await cartModel.findOne({ productId, userId });
@@ -312,16 +312,147 @@ export async function deleteproduct(req, res) {
   }
 }
 
-export async function getimg(req, res) {
-  let { name } = req.params;
-  const filePath = path.resolve(`./uploaded-images/${name}`);
 
+
+export async function getimg(req, res) {
   try {
-    const exists = await fs.access(filePath);
-    if (exists) {
-      res.sendFile(filePath);
+    const { productId } = req.params;
+    console.log(productId);
+
+    const product = await productsModel.findOne({ _id: productId });
+
+    if (!product || !product.images || product.images.length === 0) {
+      return res.status(404).json({ error: 'Images not found' });
+    }
+
+    const imagePromises = product.images.map(async (imageName) => {
+      const filePath = path.resolve(`./uploaded-images/${imageName}`);
+      console.log("path", filePath);
+
+      try {
+        await fs.access(filePath, fs.constants.R_OK);
+        return filePath;
+      } catch (error) {
+        console.error('Error accessing image file:', error);
+        throw new Error('Image not accessible');
+      }
+    });
+
+    const imagePaths = await Promise.all(imagePromises);
+    console.log("img path", imagePaths);
+
+    res.status(200).json({
+      msg: 'Images found',
+      imagePaths,
+    });
+
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+
+export async function removeCart(req, res) {
+  try {
+    const { productId, userId } = req.body;
+
+    const deleteCartProduct = await cartModel.deleteOne({ productId: productId });
+    if (deleteCartProduct) {
+      res.status(200).json({ message: 'Product deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'Product not found' });
     }
   } catch (error) {
-    res.status(404).json({ error: 'Image not found' });
+    console.error('Error deleting product:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
+
+
+export async function adminfetchusers(req, res) {
+  try {
+    const users = await userModel.find();
+    res.json({ users });
+
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching users' });
+  }
+
+  // console.log(users);
+};
+
+export async function admindeleteuser(req, res) {
+  const userId = req.params.userId;
+  console.log(userId);
+
+  try {
+
+    const userDelete = await userModel.deleteOne({ _id: userId });
+    const productsDelete = await productsModel.deleteMany({ userId: userId });
+    const cartDelete = await cartModel.deleteMany({ userId: userId });
+
+    if (userDelete.n > 0 || (productsDelete.n > 0 && cartDelete.n > 0)) {
+      res.status(200).json({ message: 'User and related records deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting user and related records:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
+
+
+
+
+
+
+export async function buynow(req, res) {
+  try {
+    const { userId } = req.body;
+    console.log(userId);
+
+
+    const items = await cartModel.find({ userId: userId });
+
+    for (const item of items) {
+      console.log("cart-count", item.count);
+      const product = await productsModel.findOne({ _id: item.productId });
+      console.log("product-count", product.stock);
+
+      const cartcount =item.count;
+      const productcount = product.stock;
+        if (productcount === cartcount) {
+          await productsModel.deleteOne({ _id: item.productId  });
+          await cartModel.deleteMany({ productId: item.productId });
+          console.log("Product deleted - cart-count and product-count are equal");
+        }
+
+
+      if (product.stock < item.count) {
+        return res.status(400).json({ message: 'Not enough stock to fulfill the order' });
+      }
+      product.stock -= item.count;
+      await product.save();
+      console.log("updated - cart-id", item.productId );
+      console.log("updated - product-id", product._id);
+
+      console.log("updated - cart-count", item.count);
+      console.log("updated - product-count", product.stock);
+
+    
+    }
+
+    await cartModel.deleteMany({ userId: userId });
+    return res.status(200).json({ message: 'Buy process completed successfully' });
+  
+
+
+  } catch (error) {
+    console.error('Error handling buy now:', error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 }

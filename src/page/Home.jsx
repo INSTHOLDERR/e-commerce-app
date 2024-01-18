@@ -36,6 +36,7 @@ function Home() {
               </div>
               <div className="product-down">
                 <h2 className='product-title'>{product.title}</h2>
+               
                 <Link to={`/product/${product._id}`} className='product-view'>View</Link>
               </div>
             </div>

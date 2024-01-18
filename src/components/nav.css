@@ -1,53 +1,77 @@
-.nav-container {
-    width: 100%;
+
+.navbar {
+    background-color: #2874f0;
+    padding: 10px;
     height: 10rem;
-    padding: 0.5rem;
-    position: sticky;
-    background-color: #e0e0e0;
-}
-.logo{
-    height: 7rem;
-    width: 7rem;
-    /* margin-right: 0px;    */
-    /* border-radius: 50%; */
-    margin-left: 50px;
-    margin-top: 10px;
-    
-}
-/* .nav-container img {
-   
-
-} */
-
-.profile{
-    height: 7rem;
-    width: 7rem;
-    
-    /* margin-right: 0px; */
-    border-radius: 50%;
-}
-.nav-container .right {
-    display: flex;
-    position: absolute;
-    height: 100%;
-    right: 7rem;
-    top: 0;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-}
-.nav-container .right button {
+  }
+  
+  .navbar-brand {
     cursor: pointer;
-    border-radius: 5em;
+  }
+  
+  .logo {
+    height: 60px;
+    height: 60px;
+  }
+  
+  .navbar-toggler {
+    border: none;
+  }
+  
+  .nav-link {
     color: #fff;
-    background: linear-gradient(to right, #2ed19e, #2ed19e);
-    border: 0;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 15px;
-    padding-top: 15px;
-    font-family: 'Ubuntu', sans-serif;
-    margin-left: 10%;
-    font-size: 13px;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
-}
+    cursor: pointer;
+  }
+  
+  .nav-item {
+    margin-right: 30px;
+    font-size: 20px;
+    color: black;
+  }
+  
+  .profile {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+  
+  .profile-buttons {
+    display: flex;
+    align-items: center;
+    
+
+  }
+  
+  .logout-button {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #333;
+    padding: 5px 10px;
+    cursor: pointer;
+    
+    
+  }
+  
+  .navbar-nav.ml-auto {
+    display: flex;
+    align-items: center;
+  }
+  
+  .active {
+    border-bottom: 2px solid #fff;
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-toggler-icon {
+      background-color: #fff;
+    }
+  
+    .navbar-toggler {
+      padding: 0;
+    }
+  
+    .navbar-collapse {
+      background-color: #2874f0;
+    }
+  }
+  
