@@ -20,7 +20,7 @@ function Login() {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: async (values) => {
-            let loginPromise = axios.post("/api/login", values, {
+            let loginPromise = axios.post("/api/login", { name: value } , {
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
               }
