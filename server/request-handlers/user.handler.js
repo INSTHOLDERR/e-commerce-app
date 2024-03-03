@@ -39,41 +39,57 @@ export async function register(req, res) {
     }
 }
 
+
 export async function login(req, res) {
     try {
-        let { username, password } = req.body;
-        if(!username || !password) {
+        
+        // Extract username and password from request body
+        const { username, password } = req.body;
+
+        // Check if username or password is empty
+        if (!username || !password) {
             return res.status(400).json({
                 msg: "Username or password cannot be empty!"
-            })
+            });
         }
-        let user = await userModel.findOne({ username });
-        if(!user) {
+
+        // Find user by username in the database
+        const user = await userModel.findOne({ username });
+
+        // If user does not exist, return error message
+        if (!user) {
             return res.status(400).json({
                 msg: "Invalid username or password!"
-            })
+            });
         }
-        let isMatch = await bcrypt.compare(password, user.password);
-        if(isMatch) {
-            let token = sign({
+
+        // Compare passwords
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        // If passwords match, generate JWT token
+        if (isMatch) {
+            const token = sign({
                 username: user.username,
                 userId: user._id
-            }, process.env.SECRET_KEY,{
+            }, process.env.SECRET_KEY, {
                 expiresIn: "48h"
             });
+
             return res.status(200).json({
                 msg: "Login successful!",
                 token
-            })
+            });
         }
+
+        // If passwords don't match, return error message
         return res.status(400).json({
             msg: "Invalid username or password!"
-        })
+        });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({
-            msg: "Error occured!"
-        })
+            msg: "Error occurred!"
+        });
     }
 }
 

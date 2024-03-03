@@ -20,7 +20,9 @@ function Login() {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: async (values) => {
-            let loginPromise = axios.post("/api/login", { name: value } , {
+          console.log(values);
+          const { username, password } = values;
+            let loginPromise = axios.post("/api/login", {username, password } , {
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
               }
@@ -64,7 +66,7 @@ function Login() {
             <p className="log-sign" align="center"> Log in  </p>
             
             <form className="log-form1"  onSubmit={formik.handleSubmit}>
-     
+
               <input {...formik.getFieldProps("username")} className="log-un" type="text" name="username" id="username" placeholder="username" /><br />
               <input {...formik.getFieldProps("password")} className="log-un" type="password" name="password" id="password" placeholder="password" /><br />
               <input type="submit" className="log-submit" value="register" />
